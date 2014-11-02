@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>chucks</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1>chunks</h1>
+    <h2>base text</h2>
+    <p>{{basetext}}</p>
+    <h2>in sentence</h2>
+    <p>{{chapters}}</p>
+  </body>
+</html>

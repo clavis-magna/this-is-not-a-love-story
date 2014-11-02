@@ -8,6 +8,11 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
+//
+// route for text chunking api
+// 
+var chunk = require('./routes/chunk');
+
 var app = express();
 
 // view engine setup
@@ -25,6 +30,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/users', users);
+app.use('/chunk', chunk);
 
 //for serving static pages
 app.use(express.static(path.join(__dirname, './views/static_html')));
