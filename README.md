@@ -31,3 +31,20 @@ http://path-to-node-server:port/chunk?chunktype=*&chapter=13
 
 * sentence
 * phrase
+
+<h3>
+Install & run
+</h3>
+
+git clone https://github.com/clavis-magna/this-is-not-a-love-story.git
+```
+cd this-is-not-a-love-story
+
+npm install
+
+node bin/www  
+```
+
+chunking API now available @
+
+http://localhost:3000/chunk
