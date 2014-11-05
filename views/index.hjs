@@ -6,7 +6,6 @@
   </head>
   <body>
     <h1>{{ title }}</h1>
-    <p>Welcome to {{ title }}</p>
-    <a href="another.html">red</a>
+    nothing to see here yet.
   </body>
 </html>
