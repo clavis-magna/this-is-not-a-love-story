@@ -14,6 +14,7 @@ Text Chunking api
 </h3>
 
 Returns array of text 'chunked' by various taxonomies
+
 http://path-to-node-server:port/chunk?chunkType=*
 
 * chapertitle
