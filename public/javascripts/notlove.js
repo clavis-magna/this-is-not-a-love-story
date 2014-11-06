@@ -15,7 +15,6 @@ $(doIt());
 function doIt(){	
 	// firstly lets get the number of chapters
 	$.get( "chunk", { chunktype : "chaptercount" } )
-		//wait untit after we get the data back	
 		.done(function( data ) {
 			numberOfChapters = data;
 			console.log("there are "+numberOfChapters+" chapters");
@@ -23,8 +22,14 @@ function doIt(){
   		});
 }
 
-function getChunks(){
-	
+
+//
+// iterate thorugh the number of chapters
+// chunking each capter into sections
+// we loop through chapters while they exists, when there are no chapters left, write to the browser
+//
+
+function getChunks(){	
 	if(chapterIterate < numberOfChapters){
 		console.log("on iteration "+chapterIterate+" of "+numberOfChapters);
 		//get some text using the chunk api
@@ -45,29 +50,7 @@ function getChunks(){
 		}
 }
 
-function formatHeadings(){
-	
-	
-			
-	//we start at 1 as the chapter title is at 0 in the array
-	for(var i = 1; i < chunks.length; i++){
-		//main part headings for chapter
-		var chapterNumber = Number(chapterIterate)+1;
-		partName[ i ] = "<li><b>CHAPTER "+ chapterNumber +", PART " + (i) + "</b>:  <br/><br/>" + chunks[i] + "</li>";
-	}
-		
-	getTwitterContent();
-}
 
-function appendToPage(){
-	console.log("------------------------------");
-	console.log("it starts here");
-	console.log(partName);
-	// Insert the part names
-	$( "<ul></ul>" )
-	  .append( partName.join( "" ) )
-	  .appendTo( $text );
-}
 
 function getTwitterContent(){
 	if(chunkIterate < chunks.length-1){
@@ -75,8 +58,8 @@ function getTwitterContent(){
 		//search string as first 30 characters (just as a quick test really)
 		//var theSearchTerm = chunks[chunkIterate].substr(0, 30);
 		
-		//search string for this pass first 4 words
-		var theSearchTerm = get4Words(chunks[chunkIterate]);
+		//search string for this pass first 4 words. 
+		var theSearchTerm = getWords(chunks[chunkIterate],4);
 		
 		if(theSearchTerm == ""){
 			theSearchTerm = "x";
@@ -117,13 +100,31 @@ function getTwitterContent(){
 	
 }
 
-
+function appendToPage(){
+	console.log("------------------------------");
+	console.log("it starts here");
+	console.log(partName);
+	// Insert the part names
+	$( "<ul></ul>" )
+	  .append( partName.join( "" ) )
+	  .appendTo( $text );
+}
  
 //
 // helpers
 //
 
-function get4Words(str) {
-    return str.split(/\s+/).slice(1,4).join(" ");
+// return first x words from a string
+
+function getWords(str,howMany) {
+    return str.split(/\s+/).slice(1,howMany).join(" ");
 }
+
+// acccess get params from url
+
+function $_GET(q,s) { 
+    s = s ? s : window.location.search; 
+    var re = new RegExp('&'+q+'(?:=([^&]*))?(?=&|$)','i'); 
+    return (s=s.replace(/^?/,'&').match(re)) ? (typeof s[1] == 'undefined' ? '' : decodeURIComponent(s[1])) : undefined; 
+} 
  

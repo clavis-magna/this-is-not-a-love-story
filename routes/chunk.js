@@ -18,8 +18,12 @@ router.get('/', function(req, res) {
   	
   	console.log(chapterNumber);
 
-  	//read in datafile
-  	var data = fs.readFileSync('./public/data/sourcetext/original-text-tidied.txt', 'utf8');
+  	// read in datafile
+  	// full text
+  	//var data = fs.readFileSync('./public/data/sourcetext/original-text-tidied.txt', 'utf8');
+  	
+  	// test text
+  	var data = fs.readFileSync('./public/data/sourcetext/short-test-text.txt', 'utf8');
   	
   	// wait for the result, then use it - don't want async here happy to wait
 
