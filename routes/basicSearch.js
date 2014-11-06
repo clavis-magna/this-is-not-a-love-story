@@ -21,6 +21,10 @@ router.get('/', function(req, res) {
 		numTweets = 1;
 	}
 	
+	function handleError(err){
+		console.log("twitter error : "+ err);
+	}
+	
 	T.get('search/tweets', { q: term, count: 100 }, function(err, data) {
 		if(err) return handleError(err);
 		

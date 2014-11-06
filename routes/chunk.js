@@ -31,6 +31,12 @@ router.get('/', function(req, res) {
 	  	res.send(getChapterTitles(data)); 
   	}
   	
+  	if(chunkType == "chaptercount"){
+		 //how many chapters are there?
+		 var chaptersForCount = getChapterTitles(data);
+		 res.send(chaptersForCount.length.toString());
+	 }
+  	
   	//remove heading indicators
   	data = data.replace(/\_/g,"");
   	
@@ -66,6 +72,7 @@ router.get('/', function(req, res) {
 	 if(chunkType == "word"){
 	  	res.send(getWords(data)); 
 	 }
+	 
 	 
 	//send 200 
 	res.status(200).end();
