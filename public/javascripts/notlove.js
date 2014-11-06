@@ -33,7 +33,8 @@ function getChunks(){
 			.done(function( data ) {
 				chunks = data;
 				//format the headings for the main Chapters
-				partName[partNameCount] = "<b><h2>CHAPTER 1 : <span class=\"chapter_name\">" + chunks[0] + "</span></h2></b>";
+				var chapterNumber = Number(chapterIterate)+1;
+				partName[partNameCount] = "<b><h2>CHAPTER "+ chapterNumber + " : <span class=\"chapter_name\">" + chunks[0] + "</span></h2></b>";
 				partNameCount++;
 				getTwitterContent();
 	  		});
@@ -51,7 +52,8 @@ function formatHeadings(){
 	//we start at 1 as the chapter title is at 0 in the array
 	for(var i = 1; i < chunks.length; i++){
 		//main part headings for chapter
-		partName[ i ] = "<li><b>CHAPTER 1, PART " + (i) + "</b>:  <br/><br/>" + chunks[i] + "</li>";
+		var chapterNumber = Number(chapterIterate)+1;
+		partName[ i ] = "<li><b>CHAPTER "+ chapterNumber +", PART " + (i) + "</b>:  <br/><br/>" + chunks[i] + "</li>";
 	}
 		
 	getTwitterContent();
@@ -75,7 +77,13 @@ function getTwitterContent(){
 		$.get( "search", { term : theSearchTerm, number: "3" } )
 			.done(function(data){
 				console.log(data);
-				partName[ partNameCount ] = "<li><b>CHAPTER 1, PART " + (chunkIterate) + "</b>:  <br/><br/>" + chunks[chunkIterate] + "</li>";
+				
+				//following line commented out to hide actual seed text.
+				//
+				//partName[ partNameCount ] = "<li><b>CHAPTER "+ chapterIterate+1 +", PART " + (chunkIterate) + "</b>:  <br/><br/>" + chunks[chunkIterate] + "</li>";
+				
+				//following line alternative to showing see text
+				partName[ partNameCount ] = "<li><b>CHAPTER "+ chapterIterate+1 +", PART " + (chunkIterate) + "</b>:  <br/><br/></li>";
 				partName[ partNameCount ] += "<p>" + data + "</p>";
 				
 				//to check out why partName if not working with incementals
