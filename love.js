@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var basicSearch = require('./routes/basicSearch');
 
 //
 // route for text chunking api
@@ -15,7 +16,7 @@ var chunk = require('./routes/chunk');
 
 var app = express();
 
-// view engine setup
+// view engine setup for static pages
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hjs');
 
@@ -31,9 +32,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/users', users);
 app.use('/chunk', chunk);
+app.use('/search', basicSearch);
 
 //for serving static pages
-app.use(express.static(path.join(__dirname, './views/static_html')));
+app.use(express.static(path.join(__dirname, './public/static_html')));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

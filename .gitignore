@@ -27,3 +27,9 @@ node_modules
 
 #os
 .DS_Store
+
+#twit config file
+config.js
+
+#amazon archive
+archive.zip
