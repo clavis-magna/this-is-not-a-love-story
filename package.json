@@ -14,6 +14,7 @@
     "debug": "~2.0.0",
     "hjs": "~0.0.6",
     "less-middleware": "1.0.x",
-    "twit": "1.1.18"
+    "twit": "1.1.18",
+    "wordpos": "0.1.5"
   }
 }
