@@ -71,7 +71,17 @@ function appendToPage(){
 
 function getTwitterContent(){
 	if(chunkIterate < chunks.length-1){
-		var theSearchTerm = chunks[chunkIterate].substr(0, 30);
+		
+		//search string as first 30 characters (just as a quick test really)
+		//var theSearchTerm = chunks[chunkIterate].substr(0, 30);
+		
+		//search string for this pass first 4 words
+		var theSearchTerm = get4Words(chunks[chunkIterate]);
+		
+		if(theSearchTerm == ""){
+			theSearchTerm = "x";
+		}
+		
 		console.log("section "+chunkIterate+" of "+chunks.length+" in chapter "+chapterIterate);
 		
 		$.get( "search", { term : theSearchTerm, number: "3" } )
@@ -83,7 +93,8 @@ function getTwitterContent(){
 				//partName[ partNameCount ] = "<li><b>CHAPTER "+ chapterIterate+1 +", PART " + (chunkIterate) + "</b>:  <br/><br/>" + chunks[chunkIterate] + "</li>";
 				
 				//following line alternative to showing see text
-				partName[ partNameCount ] = "<li><b>CHAPTER "+ chapterIterate+1 +", PART " + (chunkIterate) + "</b>:  <br/><br/></li>";
+				var chapterNumber = Number(chapterIterate)+1;
+				partName[ partNameCount ] = "<li><b>CHAPTER "+ chapterNumber +", PART " + (chunkIterate) + "</b>:  <br/><br/></li>";
 				partName[ partNameCount ] += "<p>" + data + "</p>";
 				
 				//to check out why partName if not working with incementals
@@ -92,7 +103,7 @@ function getTwitterContent(){
 				
 				partNameCount ++;
 				chunkIterate ++;
-				setTimeout(getTwitterContent,500);
+				setTimeout(getTwitterContent,5000);
 			})
 			.fail(function() {
 			    alert( "error" );
@@ -108,5 +119,11 @@ function getTwitterContent(){
 
 
  
+//
+// helpers
+//
 
+function get4Words(str) {
+    return str.split(/\s+/).slice(1,4).join(" ");
+}
  
