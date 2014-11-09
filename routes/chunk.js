@@ -1,12 +1,20 @@
+//
+// API to get back text in various chunks as arrays
+// this is not a love story 2014
+//
+
 var express = require('express');
 var router = express.Router();
-
-// API to get back text in various chunks as arrays
 
 //require file system library
 var fs = require('fs');
 
+//require pos Library
+var WordPOS = require('wordpos');
+var wordpos = new WordPOS();
 
+//make the pos query accessible
+var pos;
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -15,6 +23,7 @@ router.get('/', function(req, res) {
   	
   	var chunkType = req.query.chunktype;
   	var chapterNumber = req.query.chapter;
+  	pos = req.query.pos;
   	
   	console.log(chapterNumber);
 
@@ -65,6 +74,14 @@ router.get('/', function(req, res) {
 	 	if(chapterNumber == undefined){
   	  		res.send(getPhrases(data));
   	  	}
+  	  	else if(pos != undefined){
+			//get chapter chunks
+	  	  	var chapters = getChapters(data);
+	  	  	var chaptersCunked = getPhrases(chapters[chapterNumber]);
+	  	  	getPartsOfSpeach(chaptersCunked, function(returnValue) {
+			  res.send(returnValue);
+			});
+		}
   	  	else{
   	  		//get chapter chunks
 	  	  	var chapters = getChapters(data);
@@ -79,7 +96,7 @@ router.get('/', function(req, res) {
 	 
 	 
 	//send 200 
-	res.status(200).end();
+	//res.status(200).end();
 	
 	console.log("done");
 
@@ -189,7 +206,7 @@ function getPhrases(theText){
   	var dataphrase = theText.split(/!|\.|,/); 
   	
   	//remove any emtpy words & trim whitespace
-  	for(var i =  dataphrase.length-1; i--;){
+  	for(var i = 0; i < dataphrase.length-1; i++){
   		//trim
 		dataphrase[i] = dataphrase[i].trim();
 		
@@ -205,10 +222,51 @@ function getPhrases(theText){
 		//and trim again for good measure
 		dataphrase[i] = dataphrase[i].trim();
 		
+		/*
+		//currently just set up for adjectives but will expand
+		if(pos != undefined){
+			console.log("pos called");
+			wordpos.getAdjectives(dataphrase[i], function(result){
+			    if(result != ""){
+				    dataphrase[i] = result.join(' ');
+				    console.log("these are meant to be adjectives: "+dataphrase[i]);
+				}
+				
+			});
+		}
+		*/
+		
 		//remove empities
 		if ( dataphrase[i] === ""){
 			dataphrase.splice(i, 1);
 		}
+		
 	}
 	return dataphrase;
 }
+
+//
+// get parts of speach
+
+function getPartsOfSpeach(phrases, callback) {
+  var phrase = 0;
+  var newPhraseIndex = 0;
+  var newPhrases = [];
+  
+  for(var i = 0; i < phrases.length; i++) {
+    wordpos.getAdjectives(phrases[i], function(result){
+	    if(result.length !== 0){
+		    newPhrases[newPhraseIndex] = result.join(' ');
+		    newPhraseIndex++;
+		}
+		if (++phrase == phrases.length) {
+			callback(newPhrases);
+      	}
+    });
+  }
+}
+
+
+
+
+

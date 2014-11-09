@@ -33,13 +33,13 @@ function getChunks(){
 	if(chapterIterate < numberOfChapters){
 		console.log("on iteration "+chapterIterate+" of "+numberOfChapters);
 		//get some text using the chunk api
-		$.get( "chunk", { chunktype : "phrase", chapter: chapterIterate } )
+		$.get( "chunk", { chunktype : "phrase", chapter: chapterIterate, pos: "adjective" } )
 			//wait untit after we get the data back	
 			.done(function( data ) {
 				chunks = data;
 				//format the headings for the main Chapters
 				var chapterNumber = Number(chapterIterate)+1;
-				partName[partNameCount] = "<b><h2>CHAPTER "+ chapterNumber + " : <span class=\"chapter_name\">" + chunks[0] + "</span></h2></b>";
+				partName[partNameCount] = "<b><h2>CHAPTER "+ chapterNumber +"</h2></b>"; // : <span class=\"chapter_name\">" + chunks[0] + "</span></h2></b>";
 				partNameCount++;
 				getTwitterContent();
 	  		});
@@ -75,10 +75,10 @@ function getTwitterContent(){
 				//
 				//partName[ partNameCount ] = "<li><b>CHAPTER "+ chapterIterate+1 +", PART " + (chunkIterate) + "</b>:  <br/><br/>" + chunks[chunkIterate] + "</li>";
 				
-				//following line alternative to showing see text
-				var chapterNumber = Number(chapterIterate)+1;
-				partName[ partNameCount ] = "<li><b>CHAPTER "+ chapterNumber +", PART " + (chunkIterate) + "</b>:  <br/><br/></li>";
-				partName[ partNameCount ] += "<p>" + data + "</p>";
+				//following line alternative to showing seed text
+				//var chapterNumber = Number(chapterIterate)+1;
+				//partName[ partNameCount ] = "<li><b>CHAPTER "+ chapterNumber +", PART " + (chunkIterate) + "</b>:  <br/><br/></li>";
+				partName[ partNameCount ] = "<p>" + data + "</p>";
 				
 				//to check out why partName if not working with incementals
 				//console.log("== " + partName);

@@ -15,6 +15,7 @@ router.get('/', function(req, res) {
 	
 	//we dont want retweets
 	term = term + " -RT";
+	term = term + " lang:en";
 	
 	if(numTweets == undefined)
 	{
@@ -62,6 +63,7 @@ router.get('/', function(req, res) {
 					theTweet = theTweet.replace(/(#\w+)/g, "");
 			        //remove URLS
 			        theTweet = theTweet.replace(/((ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?)/ig, "");
+
 			        
 			        tweetsToReturn += theTweet+" ";	
 			    }
