@@ -34,7 +34,6 @@ router.get('/', function(req, res) {
 		
 		//get the statuses from the json
 		var tweets = data.statuses;
-		console.log("before >>" +tweets.length);
 		var tweetsToReturn = "";
 		
 		var tweetsToDelete = [];
@@ -64,7 +63,6 @@ router.get('/', function(req, res) {
 			tweets.splice(tweetsToDelete[n], 1);
 		}
 		
-		console.log("after >>" +tweets.length);
 		if(tweets[0] != undefined){
 			
 			// store for indexes we have already chosen to check on repeats

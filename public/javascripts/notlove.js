@@ -88,6 +88,9 @@ function getTwitterContent(){
 				
 				partNameCount ++;
 				chunkIterate ++;
+				
+				appendToPage();
+				
 				setTimeout(getTwitterContent,1000);
 			})
 			.fail(function() {
@@ -103,9 +106,12 @@ function getTwitterContent(){
 }
 
 function appendToPage(){
-	console.log("------------------------------");
-	console.log("it starts here");
-	console.log(partName);
+	//console.log("------------------------------");
+	//console.log("it starts here");
+	//console.log(partName);
+	
+	$text.empty();
+	
 	// Insert the part names
 	$( "<ul></ul>" )
 	  .append( partName.join( "" ) )
