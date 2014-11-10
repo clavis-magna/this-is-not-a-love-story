@@ -2,7 +2,7 @@ var $text = $( "#main_text" );
 var partName = [];
 var partNameCount = 0;
 var chunks = [];
-var chunkIterate = 1;
+var chunkIterate = 0;
 var chapterIterate = 0;
 var numberOfChapters;
 
@@ -53,13 +53,15 @@ function getChunks(){
 
 
 function getTwitterContent(){
-	if(chunkIterate < chunks.length-1){
+	if(chunkIterate < chunks.length){
 		
 		//search string as first 30 characters (just as a quick test really)
 		//var theSearchTerm = chunks[chunkIterate].substr(0, 30);
 		
 		//search string for this pass first 4 words. 
-		var theSearchTerm = getWords(chunks[chunkIterate],4);
+		//var theSearchTerm = getWords(chunks[chunkIterate],4);
+		
+		var theSearchTerm = chunks[chunkIterate];
 		
 		if(theSearchTerm == ""){
 			theSearchTerm = "x";
@@ -78,7 +80,7 @@ function getTwitterContent(){
 				//following line alternative to showing seed text
 				//var chapterNumber = Number(chapterIterate)+1;
 				//partName[ partNameCount ] = "<li><b>CHAPTER "+ chapterNumber +", PART " + (chunkIterate) + "</b>:  <br/><br/></li>";
-				partName[ partNameCount ] = "<p>" + data + "</p>";
+				partName[ partNameCount ] = data ;
 				
 				//to check out why partName if not working with incementals
 				//console.log("== " + partName);
@@ -86,7 +88,7 @@ function getTwitterContent(){
 				
 				partNameCount ++;
 				chunkIterate ++;
-				setTimeout(getTwitterContent,5000);
+				setTimeout(getTwitterContent,1000);
 			})
 			.fail(function() {
 			    alert( "error" );
@@ -94,7 +96,7 @@ function getTwitterContent(){
 	}
 	else{
 		chapterIterate++;
-		chunkIterate = 1;
+		chunkIterate = 0;
 		getChunks();
 	}
 	

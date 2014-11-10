@@ -7,6 +7,8 @@ var emojiStrip = require('emoji-strip');
 config = require('../config');
 var T = new Twit(config);
 
+var ignoreWords = ["follow","zach","♪","prize","prizes","$","music","harry"];
+
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -32,8 +34,36 @@ router.get('/', function(req, res) {
 		
 		//get the statuses from the json
 		var tweets = data.statuses;
+		console.log("before >>" +tweets.length);
 		var tweetsToReturn = "";
 		
+		var tweetsToDelete = [];
+		
+		//dump any tweets with ignore words in them, and try and tidy them into sentence case. (this needs more work)
+		for(l = 0; l < tweets.length; l++){
+			var thisTweet = tweets[l].text;
+			thisTweet = thisTweet.toLowerCase();
+			for(m = 0; m < ignoreWords.length; m++){
+				if(thisTweet.indexOf(ignoreWords[m]) !== -1){
+					console.log("dumping: "+l);
+					//tweets.splice(l, 1);
+					tweetsToDelete.push(l);
+					break;
+				}	
+			}
+			//capitalise first letter
+			thisTweet = thisTweet.charAt(0).toUpperCase() + thisTweet.slice(1);
+			//return it back to the original array
+			if(tweets[l] != undefined){
+				tweets[l].text = thisTweet;
+			}
+		}
+		
+		for(n = 0; n < tweetsToDelete.length; n++){
+			tweets.splice(tweetsToDelete[n], 1);
+		}
+		
+		console.log("after >>" +tweets.length);
 		if(tweets[0] != undefined){
 			
 			// store for indexes we have already chosen to check on repeats
@@ -66,7 +96,7 @@ router.get('/', function(req, res) {
 			        theTweet = theTweet.replace(/((ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?)/ig, "");
 					//remove emoji
 					theTweet = emojiStrip(theTweet);
-			        
+			        //attempt to tidy with sentence case
 			        tweetsToReturn += theTweet+" ";	
 			    }
 	        }
@@ -100,3 +130,4 @@ module.exports = router;
 function randomInt (low, high) {
     return Math.floor(Math.random() * (high - low) + low);
 }
+
