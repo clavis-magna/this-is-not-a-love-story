@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Twit = require('twit');
+var emojiStrip = require('emoji-strip');
 
 
 config = require('../config');
@@ -63,7 +64,8 @@ router.get('/', function(req, res) {
 					theTweet = theTweet.replace(/(#\w+)/g, "");
 			        //remove URLS
 			        theTweet = theTweet.replace(/((ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?)/ig, "");
-
+					//remove emoji
+					theTweet = emojiStrip(theTweet);
 			        
 			        tweetsToReturn += theTweet+" ";	
 			    }
