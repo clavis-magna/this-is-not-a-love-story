@@ -7,7 +7,7 @@ var emojiStrip = require('emoji-strip');
 config = require('../config');
 var T = new Twit(config);
 
-var ignoreWords = ["follow","zach","♪","prize","prizes","$","music","harry"];
+var ignoreWords = ["follow","zach","prize","prizes","$","music","harry","poll","polls","score"];
 
 
 /* GET home page. */
@@ -59,7 +59,8 @@ router.get('/', function(req, res) {
 			}
 		}
 		
-		for(n = 0; n < tweetsToDelete.length; n++){
+		//loop though in reverse to avoid messing up the array indexes we want to delete
+		for(n = tweetsToDelete.length-1; n >= 0; n--){
 			tweets.splice(tweetsToDelete[n], 1);
 		}
 		
