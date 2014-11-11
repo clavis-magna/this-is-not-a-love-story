@@ -5,6 +5,9 @@ var chunks = [];
 var chunkIterate = 0;
 var chapterIterate = 0;
 var numberOfChapters;
+var chapterHeading;
+
+var chapterHeadingPrefixes = ["Where ","In which ","Where you can see that ", "Whereby ","Whereabouts "];
 
 $(doIt());
 
@@ -25,9 +28,8 @@ function doIt(){
 
 //
 // iterate thorugh the number of chapters
-// chunking each capter into sections
-// we loop through chapters while they exists, when there are no chapters left, write to the browser
-//
+// chunking each chapter into sections
+// we loop through chapters while they exists, when there are no chapters left, else we are done
 
 function getChunks(){	
 	if(chapterIterate < numberOfChapters){
@@ -39,20 +41,24 @@ function getChunks(){
 				chunks = data;
 				//format the headings for the main Chapters
 				var chapterNumber = Number(chapterIterate)+1;
-				partName[partNameCount] = "<b><h2>CHAPTER "+ chapterNumber +"</h2></b><p class=\"drop\">"; // : <span class=\"chapter_name\">" + chunks[0] + "</span></h2></b>";
+				chapterHeading = "<b>CHAPTER "+ chapterNumber; // : <span class=\"chapter_name\">" + chunks[0] + "</span></h2></b>";
+
+				//add in the first opening paragraph tag
+				partName[partNameCount] = "<p class=\"drop\">";
 				partNameCount++;
 				getTwitterContent();
 	  		});
 	  	}
-	  	else{
-			console.log("should be writing to page now");
-			appendToPage();
+	  	else{	
+		  	$( "<p></p>").append( "this is not a love story." ).appendTo( $text );		
+			//the end
 		}
 }
 
 
 
 function getTwitterContent(){
+	
 	if(chunkIterate < chunks.length){
 		
 		//search string as first 30 characters (just as a quick test really)
@@ -102,7 +108,6 @@ function getTwitterContent(){
 		//add closing /p
 		partName[ partNameCount ] = "</p>" ;
 
-		
 		//or write to page as each chapter is complete
 		appendToPage();
 		
@@ -117,15 +122,50 @@ function getTwitterContent(){
 }
 
 function appendToPage(){
-	//console.log("------------------------------");
-	//console.log("it starts here");
-	//console.log(partName);
 	
-	//$text.empty();
+	//join just so we can get the subtitle (with a differnt var)
+	var joinedPartname = partName.join( "" );
+	//get the subheading from this joined text
+	var subHeading = afterIncluding(joinedPartname, " I ")+".";
 	
-	// Insert the part names
-	$( "<ul/>" )
-	  .append( partName.join( "" ) )
+	//we want to divide the chapter into suitable paragraphs
+	//first join it all together from the array
+	partName = partName.join( "" );
+	
+	//get the subheading while the text is spliced
+	var subHeading = afterIncluding(partName, " I ");
+	
+	//then split it up again at full stops
+	partName = partName.split("~");
+	console.log("there are "+partName.length+" sentences.");
+	for(sentence = 0; sentence < partName.length; sentence ++){
+		//add ful stops back 
+		if(partName[sentence].length > 0 && sentence != partName.length-1){
+			partName[sentence] = partName[sentence] +".";
+		
+			//and capitalise sentenc
+			partName[sentence] = partName[sentence].charAt(0).toUpperCase() + partName[sentence].slice(1);
+			if(Math.random() < 0.2){
+				console.log(sentence);
+				partName.splice(sentence, 0,"</p><p>");
+			}
+		}
+	}
+	
+	//and rejoin them
+	partName = partName.join( "" );
+	
+	//append the chapter heading
+	$( "<h2></h2>").append( chapterHeading ).appendTo( $text );
+	
+	//get a chapter heading prefix
+	var prefix = chapterHeadingPrefixes[Math.floor(Math.random()*chapterHeadingPrefixes.length)];
+	//append the subheading
+	$( "<h3></h3>").append( prefix+subHeading ).appendTo( $text );
+	
+	// Insert the part names (the main text)
+	$( "<span></span>" )
+	  .append( partName )
 	  .appendTo( $text );
 	  
 	$(".drop").dropJ({factor:5});
@@ -149,4 +189,23 @@ function $_GET(q,s) {
     var re = new RegExp('&'+q+'(?:=([^&]*))?(?=&|$)','i'); 
     return (s=s.replace(/^?/,'&').match(re)) ? (typeof s[1] == 'undefined' ? '' : decodeURIComponent(s[1])) : undefined; 
 } 
+
+//after including
+
+function afterIncluding(text, term) {
+	//find the search term in the tweet
+	var aslower = text.toLowerCase();
+	var queryaslower = term.toLowerCase();
+
+	var startOfSearch = aslower.indexOf(queryaslower);
+	
+	//remove everything up to the point of the found text
+	text = text.substring(startOfSearch, text.length);
+	text = text.substring(0, text.indexOf('~'));
+	
+	//then remove everything after any punctuation
+	text = text.split(/[.?!,]/)[0];
+	
+	return text;
+}
  

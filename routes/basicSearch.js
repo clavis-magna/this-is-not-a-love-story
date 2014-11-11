@@ -7,7 +7,7 @@ var emojiStrip = require('emoji-strip');
 config = require('../config');
 var T = new Twit(config);
 
-var ignoreWords = ["follow","zach","prize","prizes","$","music","harry","poll","polls","score","chapter"];
+var ignoreWords = ["follow","zach","prize","prizes","$","music","harry","poll","polls","score","chapter","twitter","tweet","nigga","nigger"];
 
 
 /* GET home page. */
@@ -96,7 +96,7 @@ router.get('/', function(req, res) {
 					//remove emoji
 					theTweet = emojiStrip(theTweet);
 			        //attempt to tidy with sentence case
-			        tweetsToReturn += theTweet+" ";	
+			        tweetsToReturn += theTweet+"~ ";	
 			    }
 	        }
 	        //
