@@ -39,7 +39,7 @@ function getChunks(){
 				chunks = data;
 				//format the headings for the main Chapters
 				var chapterNumber = Number(chapterIterate)+1;
-				partName[partNameCount] = "<b><h2>CHAPTER "+ chapterNumber +"</h2></b>"; // : <span class=\"chapter_name\">" + chunks[0] + "</span></h2></b>";
+				partName[partNameCount] = "<b><h2>CHAPTER "+ chapterNumber +"</h2></b><p class=\"drop\">"; // : <span class=\"chapter_name\">" + chunks[0] + "</span></h2></b>";
 				partNameCount++;
 				getTwitterContent();
 	  		});
@@ -89,7 +89,8 @@ function getTwitterContent(){
 				partNameCount ++;
 				chunkIterate ++;
 				
-				appendToPage();
+				//write to page as we go so we can see the text being built
+				//appendToPage();
 				
 				setTimeout(getTwitterContent,1000);
 			})
@@ -98,6 +99,16 @@ function getTwitterContent(){
 			});
 	}
 	else{
+		//add closing /p
+		partName[ partNameCount ] = "</p>" ;
+
+		
+		//or write to page as each chapter is complete
+		appendToPage();
+		
+		partNameCount = 0;
+		partName = [];
+		
 		chapterIterate++;
 		chunkIterate = 0;
 		getChunks();
@@ -110,12 +121,15 @@ function appendToPage(){
 	//console.log("it starts here");
 	//console.log(partName);
 	
-	$text.empty();
+	//$text.empty();
 	
 	// Insert the part names
-	$( "<ul></ul>" )
+	$( "<ul/>" )
 	  .append( partName.join( "" ) )
 	  .appendTo( $text );
+	  
+	$(".drop").dropJ({factor:5});
+	$("p").removeClass("drop");
 }
  
 //

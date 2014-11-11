@@ -7,7 +7,7 @@ var emojiStrip = require('emoji-strip');
 config = require('../config');
 var T = new Twit(config);
 
-var ignoreWords = ["follow","zach","prize","prizes","$","music","harry","poll","polls","score"];
+var ignoreWords = ["follow","zach","prize","prizes","$","music","harry","poll","polls","score","chapter"];
 
 
 /* GET home page. */
