@@ -70,6 +70,18 @@ router.get('/', function(req, res) {
   	  	}  
 	 }
 	 
+	   	if(chunkType == "iams"){
+  		if(chapterNumber == undefined){
+	  		res.send(getFirstPerson(data));
+	  	}
+	  	else{
+  	  		//get chapter chunks
+	  	  	var chapters = getChapters(data);
+	  	  	//get phases from that chapter & return them
+	  	  	res.send(getFirstPerson(chapters[chapterNumber]));	
+  	  	}  
+	 }
+	 
 	 if(chunkType == "phrase"){
 	 	if(chapterNumber == undefined){
   	  		res.send(getPhrases(data));
@@ -247,6 +259,8 @@ function getPhrases(theText){
 
 //
 // get parts of speach
+// currently hard coded to adjectives
+//
 
 function getPartsOfSpeach(phrases, callback) {
   var phrase = 0;
@@ -267,6 +281,21 @@ function getPartsOfSpeach(phrases, callback) {
 }
 
 
+//
+// get "I . ." (capital I plus next two words)
+//
 
+function getFirstPerson(theText){
+	
+	//get each occurance of I ..
+	var Iams = theText.match(/I \s*(\w+[ ']+\w+)/g);
+	
+	for(var i=0; i < Iams.length; i++){
+		console.log(Iams);
+	}
+	
+	//return it as array
+	return Iams;
+}
 
 
