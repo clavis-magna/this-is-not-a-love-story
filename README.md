@@ -14,6 +14,7 @@ Text Chunking api
 </h3>
 
 Returns array of text 'chunked' by various taxonomies
+('iams' taxonomy returns all occurrences of capital I and next 2 words)
 
 <h5>acting upon the entire seed text</h5>
 
@@ -24,6 +25,7 @@ http://path-to-node-server:port/chunk?chunkType=*
 * sentence
 * phrase
 * word
+* iams
 
 <h5>acting upon a single chapter chunk
 
@@ -31,6 +33,7 @@ http://path-to-node-server:port/chunk?chunktype=*&chapter=13
 
 * sentence
 * phrase
+* iams
 
 <h3>
 Install & run
